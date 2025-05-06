@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#store users
+# - username
+# - password
+# - movie_ratings[]
+
+# will need to change this to a mysql database potentially
+USER_FILE="USER_DB.txt"
+
+# register user function {
+	read username
+	read password
+	
+	hashed_password=$(echo "$password" | openssl passwd -6 -stdin)
+	
+	echo "$username:$hashed_password" >> $USER_DB.txt
+}
+
+# login function {
+	read username
+	read password
+	
+	if grep -q "^$username:" USER_DB.txt; then
+		stored_hashed_password=$(grep "^$username:" USER_DB.txt | cut -d':' -f2)
+		
+		if [[ $(openssl passwd -6 -salt $(echo "$stored_hashed_password" | cut -d'$' -f3) -stdin <<< "$password") == "$stored_hashed_password" ]]; then
+			echo "Login successful!"
+		else
+			echo ""Invalid password."
+		fi
+	else
+		echo "Login failed! Invalid username or password."
+	fi
+}
