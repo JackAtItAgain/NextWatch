@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test Recomendation Page</title>
+</head>
+<body style="margin:0px; width:100vw; height:100vh">
+  <header style="margin:0px; background-color:#121836; color:white; padding:0px">
+    <h1 style="margin:0px; text-align:center">Next Watch Home Page</h1>
+    <h2 style="margin:0px; text-align:center">Expect Movie</h2>
+    <div style="text-align:center">
+      <a href="http://10.0.2.16/recommendations.html">
+        <button>~~ Recommendations ~~</button>
+      </a>
+      <button>~~ Movie List ~~</button>
+      <button>~~ About Us ~~</button>
+      <button>~~ Login In ~~</button>
+      <a href="http://10.0.2.16/user_creation.html">
+        <button>~~ Sign Up ~~</button>
+      </a>
+    </div>
+  </header>
+  <main style="margin:0px; background-color:#252a53; color:white; padding:0px 5% 0px 5%">
+    <div style="text-align:center">
+      <br>
+      <h1>New Array</h1>
+      <br>
+      <div id="arrayDisplay"></div>
+      <br>
+      <br>
+    </div>
+    <script>
+      
+	const params = new URLSearchParams(window.location.search);
+        const array = params.get('array').split(',');
+
+	document.getElementById('arrayDisplay').innerText = `New Array: ${array.join(', ')}`;
+     
+    </script>     
+  </main>
+  <footer style="margin:0px; background-color:#121836; color:white; padding: 20px">
+    <p style="margin:0px; text-align:center">
+      Next Watch licences statement.
+      <br>
+      Statement 2.
+  </footer>
+</body>
+</html>

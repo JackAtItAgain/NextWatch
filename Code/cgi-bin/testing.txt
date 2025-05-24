@@ -1,0 +1,12 @@
+xhr = new XMLHttpRequest();
+                xhr.open("POST", "/cgi-bin/get_recommendations.cgi", true);
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                                console.log("Data sent successfully");
+                        }
+                };
+                xhr.send(JSON.stringify(movieRating));
+        });
+
+

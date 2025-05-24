@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Next Watch</title>
+</head>
+<body style="margin:0px; width:100vw; height:100vh">
+  <header style="margin:0px; background-color:#121836; color:white; padding:0px">
+    <div style="text-align:center">
+      <br>
+      <a href="index.html">
+        <img src="NextWatchLogo.png" alt="Next Watch Logo">
+      </a>
+      <br>
+    </div>
+    <div style="text-align:center">
+      <a href="http://10.0.2.16/rate_movies.html">
+        <button style="background-color:white">~~ Recommendations ~~</button>
+      </a>
+      <button style="background-color:white">~~ Movie List ~~</button>
+      <button style="background-color:white">~~ About Us ~~</button>
+      <button style="background-color:white">~~ Login In ~~</button>
+      <a href="http://10.0.2.16/user_creation.html">
+        <button style="background-color:white">~~ Sign Up ~~</button>
+      </a>
+    </div>
+  </header>
+  <main style="margin:0px; background-color:#252a53; color:white; padding:0px 5% 0px 5%">
+    <div style="text-align:center">
+      <br>
+      <p>
+      <h2>Movies</h2>
+      </p>
+      <button id="previousPoster">Previous</button>
+      <img id="leftPoster" src="" alt="Movie Poster1" style="width:200px; height:300px">
+      <img id="middlePoster" src="" alt="Movie Poster2" style="width:200px; height:300px">
+      <img id="rightPoster" src="" alt="Movie Poster3" style="width:200px; height:300px">
+      <button id="nextPoster">Next</button>
+      <br>
+      <br>
+      <script>
+        
+        let images = [];
+        let currentIndex = 1;
+	let totalStoredMovies = 5;
+
+        fetch('/cgi-bin/get_poster.sh')
+                .then(response => response.text())
+                .then(data => {
+                        images = data.split('\n').filter(line => line).map(line => {
+                                const parts = line.split(',');
+                                return { name: parts[0], url: parts[1] };
+                        });
+                        updateImage();
+                });
+
+        function updateImage() {
+                imgElement = document.getElementById('leftPoster');
+                imgElement.src = images[currentIndex - 1].url;
+                imgElement.alt = images[currentIndex - 1].name;
+                imgElement = document.getElementById('middlePoster');
+                imgElement.src = images[currentIndex].url;
+                imgElement.alt = images[currentIndex].name;
+                imgElement = document.getElementById('rightPoster');
+                imgElement.src = images[currentIndex + 1].url;
+                imgElement.alt = images[currentIndex + 1].name;
+        	}
+
+        document.getElementById('previousPoster').addEventListener('click', () => {
+                if(currentIndex > 1) {
+                	currentIndex = (currentIndex > 1) ? currentIndex - 1 : images.length - 1;
+                	updateImage();
+                }
+        });
+        document.getElementById('nextPoster').addEventListener('click', () => {
+                if(images[currentIndex + 2] != null) {
+        		currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
+                	updateImage();
+                }
+        });
+        
+      </script>
+    </div>
+  </main>
+  <footer style="margin:0px; background-color:#121836; color:white; padding: 20px">
+    <p style="margin:0px; text-align:center">
+      Next Watch licences statement.
+      <br>
+      Statement 2.
+  </footer>
+</body>
+</html>
