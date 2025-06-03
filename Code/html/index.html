@@ -4,58 +4,91 @@
   <meta http-equiv="Content-Type" content="text/html" charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Next Watch</title>
+  <style>
+  	.rating-down-button-clicked {
+	  background-color:red
+	}
+  	.rating-up-button-clicked {
+	  background-color:green
+	}
+  </style>
 </head>
 <body style="margin:0px; width:100vw; height:100vh">
-  <header style="margin:0px; background-color:#121836; color:white; padding:0px">
+  <header style="margin:0px; background-color:#121836; color:white; padding:0px; height:15vh">
     <div style="text-align:center">
       <br>
       <a href="index.html">
         <img src="NextWatchLogo.png" alt="Next Watch Logo">
       </a>
       <br>
-    </div>
-    <div style="text-align:center">
-      <a href="http://10.0.2.16/rate_movies.html">
-        <button style="background-color:white">~~ Recommendations ~~</button>
-      </a>
-      <button style="background-color:white">~~ Movie List ~~</button>
-      <button style="background-color:white">~~ About Us ~~</button>
-      <button style="background-color:white">~~ Login In ~~</button>
-      <a href="http://10.0.2.16/user_creation.html">
-        <button style="background-color:white">~~ Sign Up ~~</button>
-      </a>
+      <br>
     </div>
   </header>
-  <main style="margin:0px; background-color:#252a53; color:white; padding:0px 5% 0px 5%">
+  <main style="margin:0px; background-color:#252a53; color:white; padding:0px 5% 0px 5%; height:75vh">
     <div style="text-align:center">
       <br>
       <p>
-      <h2>Movies</h2>
+        <h2 id="bodyMainHeader">Rate Movies</h2>
       </p>
-      <button id="previousPoster">Previous</button>
-      <img id="leftPoster" src="" alt="Movie Poster1" style="width:200px; height:300px">
-      <img id="middlePoster" src="" alt="Movie Poster2" style="width:200px; height:300px">
-      <img id="rightPoster" src="" alt="Movie Poster3" style="width:200px; height:300px">
-      <button id="nextPoster">Next</button>
+      <div style="display:flex; justify-content:center; margin:0px">
+        <button id="previousPoster" style="margin:135px 10px 0px 0px; border:2px solid black; width:70px; height:30px">Previous</button>
+        <div style="text-align:center">
+          <img id="leftPoster" src="" alt="Movie Poster1" style="margin:0px 10px 0px 0px; width:200px; height:300px; border:2px solid black">
+          <div style="margin:0px 10px 0px 0px">
+          <button id="left_thumbsup" class="" style="width:90px; height:30px; border:2px solid black">thumb up</button>
+          <button id="left_thumbsdown" class="" style="width:90px; height:30px; border:2px solid black">thumb down</button>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <img id="middlePoster" src="" alt="Movie Poster2" style="margin:0px 10px 0px 0px; width:200px; height:300px; border:2px solid black">
+          <div style="margin:0px 10px 0px 0px">
+          <button id="middle_thumbsup" class="" style="width:90px; height:30px; border:2px solid black">thumb up</button>
+          <button id="middle_thumbsdown" class="" style="width:90px; height:30px; border:2px solid black">thumb down</button>
+          </div>
+        </div>
+        <div style="text-align:center">
+          <img id="rightPoster" src="" alt="Movie Poster3" style="width:200px; height:300px; border:2px solid black">
+          <div style="margin:0px 0px 0px 0px">
+          <button id="right_thumbsup" class="" style="width:90px; height:30px; border:2px solid black">thumb up</button>
+          <button id="right_thumbsdown" class="" style="width:90px; height:30px; border:2px solid black">thumb down</button>
+          </div>
+        </div>
+        <button id="nextPoster" style="margin:135px 0px 0px 10px; border:2px solid black; width:70px; height:30px">Next</button>
+      </div>
+      <br>
+      <button id="submitRatings" style="width:70px height:30px; border:2px solid black">Submit Ratings</button>
+      <br>
+      <div id="testResult">
+      </div>
       <br>
       <br>
       <script>
         
         let images = [];
         let currentIndex = 1;
-	let totalStoredMovies = 5;
+        let movieRating = [];
+        let ratingButton;
+        let recommendedMovies = [];
 
-        fetch('/cgi-bin/get_poster.sh')
+        fetch('cgi-bin/get_poster.sh')
                 .then(response => response.text())
                 .then(data => {
                         images = data.split('\n').filter(line => line).map(line => {
-                                const parts = line.split(',');
-                                return { name: parts[0], url: parts[1] };
+                        	const parts = line.split(',');
+                        	return { name: parts[0], url: parts[1] };
                         });
+			console.log(images)
+			movieRating = [...movieRating, ...Array(Math.max(0, images.length - movieRating.length)).fill(null)];
                         updateImage();
                 });
 
-        function updateImage() {
+	function updateImage() {
+		if(currentIndex >= images.length - 1) {
+			currentIndex = images.length - 2;			
+		}
+		if(currentIndex < 1) {
+			currentIndex = 1;
+		}
                 imgElement = document.getElementById('leftPoster');
                 imgElement.src = images[currentIndex - 1].url;
                 imgElement.alt = images[currentIndex - 1].name;
@@ -65,29 +98,164 @@
                 imgElement = document.getElementById('rightPoster');
                 imgElement.src = images[currentIndex + 1].url;
                 imgElement.alt = images[currentIndex + 1].name;
-        	}
-
+		updateButtonColor();
+       	}
+	function updateButtonColor() {
+		if(movieRating[currentIndex - 1] == 1) {
+			buttonState = document.getElementById('left_thumbsup');
+			buttonState.classList.add('rating-up-button-clicked');
+			buttonState = document.getElementById('left_thumbsdown');
+			buttonState.classList.remove('rating-down-button-clicked');
+		} else {
+			buttonState = document.getElementById('left_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+		}
+                if(movieRating[currentIndex - 1] == 0) {
+                        buttonState = document.getElementById('left_thumbsdown');
+                        buttonState.classList.add('rating-down-button-clicked');
+                        buttonState = document.getElementById('left_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+                } else {                                   
+                        buttonState = document.getElementById('left_thumbsdown');
+                        buttonState.classList.remove('rating-down-button-clicked');
+                }
+                if(movieRating[currentIndex] == 1) {
+                        buttonState = document.getElementById('middle_thumbsup');
+                        buttonState.classList.add('rating-up-button-clicked');
+                        buttonState = document.getElementById('middle_thumbsdown');
+                        buttonState.classList.remove('rating-down-button-clicked');
+                } else {                                   
+                        buttonState = document.getElementById('middle_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+                }
+                if(movieRating[currentIndex] == 0) {
+                        buttonState = document.getElementById('middle_thumbsdown');
+                        buttonState.classList.add('rating-down-button-clicked');
+                        buttonState = document.getElementById('middle_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+                } else {
+                        buttonState = document.getElementById('middle_thumbsdown');
+                        buttonState.classList.remove('rating-down-button-clicked');
+                }
+                if(movieRating[currentIndex + 1] == 1) {
+                        buttonState = document.getElementById('right_thumbsup');
+                        buttonState.classList.add('rating-up-button-clicked');
+                        buttonState = document.getElementById('right_thumbsdown');
+                        buttonState.classList.remove('rating-down-button-clicked');
+                } else {
+                        buttonState = document.getElementById('right_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+                }
+                if(movieRating[currentIndex + 1] == 0) {
+                        buttonState = document.getElementById('right_thumbsdown');
+                        buttonState.classList.add('rating-down-button-clicked');
+                        buttonState = document.getElementById('right_thumbsup');
+                        buttonState.classList.remove('rating-up-button-clicked');
+                } else {
+                        buttonState = document.getElementById('right_thumbsdown');
+                        buttonState.classList.remove('rating-down-button-clicked');
+                }
+	}
+	function storeRating() {
+		if((ratingButton == 1) || (ratingButton == 2)) {
+			movieRating[currentIndex - 1] = ratingButton % 2;
+			updateButtonColor();
+		} else if ((ratingButton == 3) || (ratingButton == 4)) {
+			movieRating[currentIndex] = ratingButton % 2;
+			updateButtonColor();
+		} else if ((ratingButton == 5) || (ratingButton == 6)) {
+			movieRating[currentIndex + 1] = ratingButton % 2;
+			updateButtonColor();
+		}
+	}
+	function showRecommendations() {
+		for (let i = 0; i < recommendedMovies.length; i++) {
+			responseIndex = recommendedMovies[i];
+			images[i].name = images[responseIndex].name;
+			images[i].url = images[responseIndex].url;
+		}
+		images.length = recommendedMovies.length;
+		currentIndex = 1;
+		updateImage();
+		updateToRecommendations();
+	}
+	function updateToRecommendations() {
+		document.getElementById('bodyMainHeader').innerHTML = "We Recommend";
+		document.getElementById('left_thumbsup').style.display = 'none';
+                document.getElementById('left_thumbsdown').style.display = 'none';
+                document.getElementById('middle_thumbsup').style.display = 'none';
+                document.getElementById('middle_thumbsdown').style.display = 'none';
+                document.getElementById('right_thumbsup').style.display = 'none';
+                document.getElementById('right_thumbsdown').style.display = 'none';
+                document.getElementById('submitRatings').style.display = 'none';
+	}
         document.getElementById('previousPoster').addEventListener('click', () => {
                 if(currentIndex > 1) {
-                	currentIndex = (currentIndex > 1) ? currentIndex - 1 : images.length - 1;
+                	currentIndex = (currentIndex > 1) ? currentIndex - 3 : currentIndex;
                 	updateImage();
-                }
+               	}
+       	});
+	document.getElementById('nextPoster').addEventListener('click', () => {
+		if(images[currentIndex + 2] != null) {
+			isImagesNull = images[currentIndex + 2]
+			currentIndex = (isImagesNull != null) ? currentIndex + 3 : currentIndex;
+			updateImage();
+		}
+	});
+	document.getElementById('left_thumbsup').addEventListener('click', () => {
+                ratingButton = 1;
+		storeRating();
         });
-        document.getElementById('nextPoster').addEventListener('click', () => {
-                if(images[currentIndex + 2] != null) {
-        		currentIndex = (currentIndex < images.length - 1) ? currentIndex + 1 : 0;
-                	updateImage();
-                }
+        document.getElementById('left_thumbsdown').addEventListener('click', () => {
+	        ratingButton = 2;
+                storeRating();
         });
+        document.getElementById('middle_thumbsup').addEventListener('click', () => {
+        	ratingButton = 3;
+                storeRating();
+        });
+        document.getElementById('middle_thumbsdown').addEventListener('click', () => {
+                ratingButton = 4;
+                storeRating();
+        });
+        document.getElementById('right_thumbsup').addEventListener('click', () => {
+                ratingButton = 5;
+                storeRating();
+        });
+        document.getElementById('right_thumbsdown').addEventListener('click', () => {
+                ratingButton = 6;
+                storeRating();
+        });
+        document.getElementById('submitRatings').addEventListener('click', () => {
+		movieRatingString = movieRating.join(',');
+
+		fetch('/cgi-bin/get_recommendations.cgi', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/x-www-form-urlencoded',
+			},
+			body: 'data=' + encodeURIComponent(movieRatingString)
+		})
+		.then(response => response.text())
+		.then(topTenRecommended => {
+			recommendedMovies = topTenRecommended.split(',').map(Number);
+			document.getElementById('testResult').innerText = 'Top Ten Recommended: ' + recommendedMovies;
+			showRecommendations();
+		})
+		.catch(error => {
+			console.error('Error:', error);
+		});
+	});
         
       </script>
     </div>
   </main>
-  <footer style="margin:0px; background-color:#121836; color:white; padding: 20px">
-    <p style="margin:0px; text-align:center">
+  <footer style="margin:0px; background-color:#121836; color:white; padding:3vh 0px 3vh 0px">
+    <p style="margin:0px; text-align:center; vertical-align:middle">
       Next Watch licences statement.
       <br>
       Statement 2.
+    </p>
   </footer>
 </body>
 </html>

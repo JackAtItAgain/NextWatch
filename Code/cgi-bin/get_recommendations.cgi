@@ -11,49 +11,85 @@ cgitb.enable()
 form = cgi.FieldStorage()
 dataString = form.getvalue('data')
 
-print("Content-Type: text/html")
+print("Content-Type: text/plain")
 print()
-print("<html><body>")
-print("<h1>Data Received</h1>")
-print(f"<p>Data: {dataString}</p>")
 
-dataString = "1,1,1,0,,,,,," 
 dataArray = dataString.split(',')
-print(f"<p>Data: {dataArray}</p>")
 movieIndex = 0
-unratedMovies = [] *len(dataArray)
+unratedMoviesIndex = 0
+genresSortedIndex = 0
+genresSorted = np.array([])
+unratedMovies = np.empty((0,))
 for i in range(len(dataArray)):
 	if dataArray[i] != '':
 		dataArray[i] = int(dataArray[i])
-recommendedMovies = []
-#print(f"<p>Data: {dataArray}</p>")
 
-def genres_ranked():
-	genresSorted = np.argsort(genrePoints)[::-1]
-	print(f"<p>Sorted Genres: {genresSorted}</p>")
-
-def show_recommended_movies():
-	with open('../cgi-bin/movie_data.txt', 'r') as file:
+def show_recommendations():
+	movieIndex = 0
+	ratingRowIndex = 0
+	with open('movie_data.txt', 'r') as file:
 		while True:
 			storedMovieData = file.readline()
 			if not storedMovieData:
 				break
+			currentDataArrayStrings = [int(x) for x in next(csv.reader([storedMovieData]))]
+			currentDataArrayInts = np.array(currentDataArrayStrings, dtype=int)
 
+			if movieIndex == 0:
+				numberOfGenres = currentDataArrayInts.size
+				movieGenrePreference = np.zeros((len(unratedMovies), numberOfGenres), dtype=int)
 
-	print(f"<p>Recommended Movies: {recommendedMovies}</p>")
+			matchUnratedMovies = np.any(unratedMovies == movieIndex)
+			if matchUnratedMovies:
+				movieGenrePreference[ratingRowIndex, :] = currentDataArrayInts
+				ratingRowIndex += 1
+			movieIndex += 1
 
+	sortedMoviePreference = np.empty_like(movieGenrePreference)
+	genresSorted = np.argsort(genrePoints)[::-1]
+	for row in range(movieGenrePreference.shape[0]):
+		for i in range(movieGenrePreference.shape[1]):
+			sortedMoviePreference[row][i] = movieGenrePreference[row][genresSorted[i]]
 
-with open('../cgi-bin/movie_data.txt', 'r') as file:
+	topThreeSorted = []
+	for col in range(sortedMoviePreference.shape[1]):
+		topThree = np.argsort(sortedMoviePreference[:, col])[-3:][::-1]
+		topThreeSorted.append(topThree)
+	topThreeRecommended = np.array(topThreeSorted)
+
+	topTenSorted = np.empty(10, dtype='int')
+	topTenCounter = 0
+	for row in range(topThreeRecommended.shape[0]):
+		for i in range(topThreeRecommended.shape[1]):
+			if topTenCounter >= (len(topTenSorted)):
+				break
+			duplicateFinder = topThreeRecommended[row][i]
+			if i == 0 and row == 0:
+				topTenSorted[topTenCounter] = duplicateFinder
+				topTenCounter += 1
+			else:
+				duplicateFound = np.any(topTenSorted == duplicateFinder)
+				if not duplicateFound and ((i != 0) or (row != 0)):
+					topTenSorted[topTenCounter] = duplicateFinder
+					topTenCounter += 1
+
+	topTenRecommended = np.empty(10,)
+	topTenSortedIndex = 0
+	for i in topTenSorted:
+		topTenRecommended[topTenSortedIndex] = unratedMovies[i]
+		topTenSortedIndex += 1
+
+	print(','.join(map(str, topTenRecommended)))
+
+with open('movie_data.txt', 'r') as file:
 	while True:
 		storedMovieData = file.readline()
 		if not storedMovieData:
 			break
 		currentDataArrayStrings = [int(x) for x in next(csv.reader([storedMovieData]))]
 		currentDataArrayInts = np.array(currentDataArrayStrings, dtype=int)
-		#print(f"<p>currentDataArrayInts: {currentDataArrayInts}</p>")
 		if movieIndex == 0:
 			genrePoints = np.zeros(currentDataArrayInts.shape, dtype=int)
-		#print(f"<p>genrePoints: {genrePoints}, {movieIndex}</p>")
 		if dataArray[movieIndex] == 1:
 			for i in range(len(currentDataArrayInts)):
 				genrePoints[i] += currentDataArrayInts[i]
@@ -61,16 +97,9 @@ with open('../cgi-bin/movie_data.txt', 'r') as file:
 			for i in range(len(currentDataArrayInts)):
 				genrePoints[i] -= currentDataArrayInts[i]
 		elif dataArray[movieIndex] == '':
-			unratedMovies.append(movieIndex)
-		#print(f"<p>genre points total: {genrePoints}, {movieIndex}</p>")
+			unratedMovies.resize((unratedMoviesIndex + 1,))
+			unratedMovies[unratedMoviesIndex] = movieIndex
+			unratedMoviesIndex += 1
 		movieIndex += 1
 
-print(f"<p>Genre Points: {genrePoints}</p>")
-print(f"<p>Unrated Movies: {unratedMovies}</p>")
-
-genres_ranked()
-
-print("</body></html>")
-print("Status: 302 Found")
-print("Location: ../html/recommendations.html")
-print()
+show_recommendations()
