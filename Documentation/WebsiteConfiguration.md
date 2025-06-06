@@ -34,17 +34,26 @@ In this walkthrough we will:
       sudo systemctl start apache2
 ## Configure CGI ##
 
-1.	Use the command “sudo a2enmod cgi” to enable cgi module
-2.	In etc/apache2/mods-available/mime.conf uncomment AddHandler cgi-script .cgi so it looks like this 
-3.	Then in etc/apache2/apache2.conf scroll down to Directory /var/www/> and add ExecCGI to the end of the line below so it looks like this 
-4.	In var/www/html make a new directory called cgi-bin and put your cgi files there
-5.	Then in etc/apache2/conf-available/serve-cgi-bin.conf change the bottom to look like this 
-6.	Then use command “systemctl restart apache2”
+1.	Use the command to enable cgi module:
 
-## Get digital certificate ##
+    ```
+      sudo a2enmod cgi
+2.	In the file "etc/apache2/mods-available/mime.conf" uncomment the line "AddHandler cgi-script .cgi" so it looks like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/AddHandler.png?raw=true" width="400">
+3.	Then in the file "etc/apache2/apache2.conf" scroll down to the line <Directory /var/www/> and add "ExecCGI" to the end of the line beneath so it looks like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/ExecCGI.png?raw=true" width="400">
+4.	Now navigate to "var/www" and make a new directory called cgi-bin
+5.	Then in the file "etc/apache2/conf-available/serve-cgi-bin.conf" edit the "IfDefine ENABLE_USR_LIB_CGI_BIN" tag to look like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/CgiBinDirectory.png?raw=true" width="400">
+6.	Then use command:
 
-1.	Go to certbot.eff.org
-2.	Select Apache and Linux (snap) like in the image below 
-3.	Follow the instructions to get the domain on https
+    ```
+      systemctl restart apache2
+## Get Digital Certificate ##
+
+1.	Go to [certbot.eff.org](https://certbot.eff.org/)
+2.	Select Apache and Linux (snap) like in the image below<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/Certbot.png?raw=true" width="400">
+3.	Follow the instructions that appear to get the domain on https
 
 ## Summary ##
+
+The website should now be live on https with Apache2 configured to execute CGI files located in var/www/cgi-bin/.
+
+Next Walkthrough is [Scripting](Scripting.md)
