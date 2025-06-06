@@ -7,19 +7,21 @@ My name is Jack Pember and my student number is 34394543.
 
 ## Documentation ##
 
-[Server Creation](https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/ServerSetUp.md)
-* Launch ec2 instance
-* Get static ipv4 address
-* Set up ssh to server
+The below links will walk you through the creation of my Project.
+
+[Server Creation](ServerCreation.md)
+* Launch EC2 Instance
+* Get Static IPv4 Address
+* Set up SSH to Server
 
 [Website Configuration](WebsiteConfiguration.md)
-* Get dns address and configure
-* Get and configure apache2
-* Configure cgi
-* Get digital certificate
+* Get and Configure DNS
+* Get and Configure Apache2
+* Configure CGI
+* Get Digital Certificate
 
 [Scripting](Scripting.md)
-* Install python3 and numpy for scripts
-* Html creation
-* Cgi creation
-* Set file permissions
+* Install Python3 and Numpy for Scripts
+* Html Creation
+* Cgi Creation
+* Setting File Permissions
