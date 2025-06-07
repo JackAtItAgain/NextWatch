@@ -1,8 +1,7 @@
 # Welcome to my Cloud Server Project #
 
-My name is Jack Pember and my student number is 34394543.
-[nextwatch.site](https://nextwatch.site/) is the link to my server.
-
+My name is Jack Pember and my student number is 34394543<br />
+[nextwatch.site](https://nextwatch.site/) is the link to my server<br />
 *placholder* is the link to my video explainer.
 
 ## Documentation ##
