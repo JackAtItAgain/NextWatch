@@ -9,18 +9,18 @@ My name is Jack Pember and my student number is 34394543.
 
 The below links will walk you through the creation of my Project.
 
-[Server Creation](ServerCreation.md)
+[Server Creation](/Documentation/ServerCreation.md)
 * Launch EC2 Instance
 * Get Static IPv4 Address
 * Set up SSH to Server
 
-[Website Configuration](WebsiteConfiguration.md)
+[Website Configuration](/Documentation/WebsiteConfiguration.md)
 * Get and Configure DNS
 * Get and Configure Apache2
 * Configure CGI
 * Get Digital Certificate
 
-[Scripting](Scripting.md)
+[Scripting](/Documentation/Scripting.md)
 * Install Python3 and Numpy for Scripts
 * Html Creation
 * Cgi Creation
