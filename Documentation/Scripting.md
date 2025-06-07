@@ -8,7 +8,7 @@
 
 It's important to note that while a walkthrough, this section conceptualises the scripting components as oppose to serving as a guide for exactly what to write. 
 If this were a guide for exactly what to write, it would serve no purpose since the code files are located in this repository and can be simply copied onto a server without the need for explaination.
-Therefore, the sections [HTML Creation](placeholder) and [CGI Creation](placeholder) attempt to explain the approach the scripts take in delivering content.
+Therefore, the sections [HTML Creation](#html-creation) and [CGI Creation](placeholder) attempt to explain the approach the scripts take in delivering content.
 
 ## Install Python3 and Numpy for Scripts ##
 Later we will create a CGI file that will run on Python and will also need the Numpy library installed
