@@ -26,10 +26,10 @@ The html will be a single index.html file with javascript being utilized. The go
 3.	Make 3 image tags, position them side by side and in between the next and previous buttons
 4.	Make 2 buttons for each image tag, the thumbsUp and thumbsDown buttons, position each pair shoulder to shoulder just beneath the corresponding image tag
 5.	Make 1 button, this will be our submit button, position it below thumbsUp and Down buttons in the centre of the page
-6.	Fetch the movie poster links with a simple bash file (see image below), store bash file in var/www/cgi-bin<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/PosterDisplay1.png?raw=true" width="400">
+6.	Fetch the movie poster links with a simple bash file (see image below), store bash file in var/www/cgi-bin<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/PosterDisplay1.png?raw=true" width="300">
 7.	Read the movie poster links into an array
 8.	Set the 3 image tag's source to the first 3 movies
-9.	Whenever the next button is pressed display the next 3 movies and the previous 3 movies for previous, I use an index to keep track of which movies are currently displayed<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/PosterDisplay2.png?raw=true" width="400">
+9.	Whenever the next button is pressed display the next 3 movies and the previous 3 movies for previous, I use an index to keep track of which movies are currently displayed<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/PosterDisplay2.png?raw=true" width="500">
 10.	Whenever a thumbsUp or thumbsDown button is pressed, store (1 for thumbsUp or 0 for thumbsDown) to an array with the same index as current displayed movies
 11.	Whenever the submit button is pressed, send the array that is storing (thumbsUp or thumbsDown) to each movie to a CGI file via post and await response (we will create the CGI file in the next section)
 12.	The response from the CGI file will be a string of 10 integers seperated by commas. If you use the first integer to index the array containing movie poster links, that movie is what the highest recommended by the CGI file. The second integer in the response string will give the 2nd highest recommended movie and so on until you have 10 movies ordered
@@ -43,7 +43,7 @@ The goal of the CGI script (get_recommendations.cgi) is to take a string of 1’
 I have used Python as my coding language of choice in my CGI script since I am more familair with it. Therefore, just a reminder that the exact approach taken below will need adapting for use in another language.
 
 1.	Read received string and put it into an array (this will be our dataArray)
-2.	Open movie_data.txt (the file containing each movie’s genre scores) and read the first line into an array (each line is a list of integers between 0 and 9 corresponding to how much the specific movie is considered that genre. See picture for example)<br /><br /><img src="placeholder" width="400">
+2.	Open movie_data.txt (the file containing each movie’s genre scores) and read the first line into an array (each line is a list of integers between 0 and 9 corresponding to how much the specific movie is considered that genre)<br /><br />(Referenced below is movie_data.txt displayed as an excel file but the first column (titles) and row (genres) are only for visual aid and are excluded from the .txt file)<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/MovieData.png?raw=true" width="900">
 3. Create 2 arrays, first called genrePoints which is filled with zeros and has the same size as the array containing the current line. The second array is called unratedMovies with no size specified (we will append this size of unratedMovies as needed)
 5.	If the entry of dataArray that corresponds to the current line (dataArray[0] corresponds to first line, dataArray[1] corresponds to second line, and so on) has a value of 1 (add each entry of the current line to genrePoints). If the value is 0 (subtract each entry of the current line from the array genrePoints)
 6.	But if the entry of dataArray is null append an additional entry to unratedMovies with the value of the current movie index
