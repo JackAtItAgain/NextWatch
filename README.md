@@ -1,7 +1,7 @@
 # Welcome to my Cloud Server Project #
 
-My name is Jack Pember and my student number is 34394543<br />
-[nextwatch.site](https://nextwatch.site/) is the link to my server<br />
+My name is Jack Pember and my student number is 34394543<br /><br />
+[nextwatch.site](https://nextwatch.site/) is the link to my server<br /><br />
 *placholder* is the link to my video explainer.
 
 ## Documentation ##
@@ -10,7 +10,7 @@ The below links will walk you through the creation of my Project.
 
 1.  [Server Creation](/Documentation/ServerCreation.md)<br /><br />
 2.  [Website Configuration](/Documentation/WebsiteConfiguration.md)<br /><br />
-3.  [Scripting](/Documentation/Scripting.md)<br /><br />
+3.  [Scripting](/Documentation/Scripting.md)<br />
 
 ## Script Verifiable Output ##
 
