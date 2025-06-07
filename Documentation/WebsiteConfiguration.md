@@ -38,10 +38,10 @@ In this walkthrough we will:
 
     ```
       sudo a2enmod cgi
-2.	In the file "etc/apache2/mods-available/mime.conf" uncomment the line "AddHandler cgi-script .cgi" so it looks like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/AddHandler.png?raw=true" width="400">
+2.	In the file "etc/apache2/mods-available/mime.conf" uncomment the line "AddHandler cgi-script .cgi" so it looks like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/AddHandler.png?raw=true" width="600">
 3.	Then in the file "etc/apache2/apache2.conf" scroll down to the line <Directory /var/www/> and add "ExecCGI" to the end of the line beneath so it looks like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/ExecCGI.png?raw=true" width="400">
 4.	Now navigate to "var/www" and make a new directory called cgi-bin
-5.	Then in the file "etc/apache2/conf-available/serve-cgi-bin.conf" edit the "IfDefine ENABLE_USR_LIB_CGI_BIN" tag to look like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/CgiBinDirectory.png?raw=true" width="400">
+5.	Then in the file "etc/apache2/conf-available/serve-cgi-bin.conf" edit the "IfDefine ENABLE_USR_LIB_CGI_BIN" tag to look like this<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/CgiBinDirectory.png?raw=true" width="600">
 6.	Then use command:
 
     ```
@@ -49,7 +49,7 @@ In this walkthrough we will:
 ## Get Digital Certificate ##
 
 1.	Go to [certbot.eff.org](https://certbot.eff.org/)
-2.	Select Apache and Linux (snap) like in the image below<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/Certbot.png?raw=true" width="400">
+2.	Select Apache and Linux (snap) like in the image below<br /><br /><img src="https://github.com/JackAtItAgain/NextWatch/blob/main/Documentation/VisualAids/Certbot.png?raw=true" width="700">
 3.	Follow the instructions that appear to get the domain on https
 
 ## Summary ##
