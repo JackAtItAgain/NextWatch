@@ -26,7 +26,7 @@ You will see my server's Script Verifiable Output whenever the following happens
 #### "thumb up" button is pressed ####
 *  Whenever any "thumb up" button is pressed, a script tag store a 1 to an array in the same index as which ever movie poster is above the pressed "thumb up" button. Then the button will change colour to green and turn it's corresponding "thumb down" button back to white if it is not already
 
-#### thumb down button is pressed ####
+#### "thumb down" button is pressed ####
 *  Exact same as "thumb up" except "thumb down" will store a 0 instead of 1 and will become red if pressed instead of green
 
 #### "Submit Ratings" button is pressed ####
