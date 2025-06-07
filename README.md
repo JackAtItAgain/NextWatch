@@ -22,6 +22,6 @@ The below links will walk you through the creation of my Project.
 
 [Scripting](/Documentation/Scripting.md)
 * Install Python3 and Numpy for Scripts
-* Html Creation
-* Cgi Creation
+* HTML Creation
+* CGI Creation
 * Setting File Permissions
