@@ -30,3 +30,10 @@ You will see my server's Script Verifiable Output whenever the following happens
 
 #### "Submit Ratings" button is pressed ####
 *  Whenever Submit ratings is pressed, a script tag will send an array of 1's, 0's and null's to a CGI script which will process the data. The CGI script will return a string of 10 integers, each integer represents an entry in the array containing movie poster links, the returned string is displayed where the "Submit Ratings" button was. The array of stored poster links will also be updated to only include entries found in the returned string of 10 integers, and the order of the array will be the same as the returned string of 10 integers. Lastly, all "thumb up" and "thumb down" buttons will be hidden.<br />The CGI script and the text file utilized are stored on the server and visible in this repository as the following:<br />  [get_recommendations.cgi](Code/cgi-bin/get_recommendations.cgi)<br />[movie_data.txt](Code/cgi-bin/movie_data.txt)
+
+## Current Issues and Planned Features ##
+
+*  Currently NextWatch is configured to be displayed on devices with a width of at least 600 pixels. Additional display configurations are planned.
+*  Buttons are very basic but this is so it is easier to reference them in documentation, eventually they will be replaced with icons.
+*  An account system to save user's ratings and implement reviewing was originally in development but was out of scope for this project. This is currently still planned and in development.
+*  The method to determine what movies to recommend to the user was originally more intrecate involving factoring in directors, writters, actors, public rating and a more complex genre system. This plan far exceeded the scope of the project but is still in development.
