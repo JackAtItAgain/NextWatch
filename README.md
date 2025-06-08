@@ -2,7 +2,7 @@
 
 My name is Jack Pember and my student number is 34394543<br /><br />
 [nextwatch.site](https://nextwatch.site/) is the link to my server<br /><br />
-*placholder* is the link to my video explainer.
+[Cloud Server Project Explainer](placeholder) is the link to my video explainer.
 
 ## Documentation ##
 
